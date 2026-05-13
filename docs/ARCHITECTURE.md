@@ -1,8 +1,11 @@
-Архитектура системы Cyber Club
+# Архитектура системы Cyber Club
 
-Диаграмма компонентов (PlantUML)
+## Диаграмма компонентов (PlantUML)
+
 ![Диаграмма компонентов](ARCHITECTURE.png)
-```plantuml
+
+### Исходный код диаграммы
+
 @startuml
 skinparam componentStyle rectangle
 skinparam backgroundColor #FFFFFF
@@ -32,47 +35,67 @@ note right of js
   loadPCs()
   bookPC(id)
   endSession(id)
+  showHistory()
   setInterval 5 сек
+  setInterval 1 сек (таймер)
 end note
 
 note bottom of db
-  computers: id, is_busy, session_end
+  users: id, name, phone, email
+  computers: id, is_busy, session_end, current_user_id
+  sessions: id, user_id, pc_id, start_time, end_time, hours, is_active
 end note
 
 @enduml
-```
 
-Описание связей
+## Описание связей
 
 | Компонент | Связь | Компонент | Протокол |
 |-----------|-------|-----------|----------|
 | script.js | вызывает | main.py | HTTP Fetch API |
-| main.py | читает/пишет | computers | SQL (SQLAlchemy) |
+| main.py | читает/пишет | users, computers, sessions | SQL (SQLAlchemy) |
 | main.py | вызывает | update_sessions() | Прямой вызов |
-| update_sessions() | обновляет | computers | SQL (SQLAlchemy) |
+| update_sessions() | обновляет | computers, sessions | SQL (SQLAlchemy) |
 
-Схема базы данных
+## Схема базы данных
+
+### Таблица users
 
 | Поле | Тип | Описание |
 |------|-----|----------|
 | id | INTEGER | Первичный ключ |
-| is_busy | BOOLEAN | Занят ли ПК (по умолчанию False) |
-| session_end | DATETIME | Время окончания брони (NULL если свободен) |
+| name | STRING | Имя пользователя |
+| phone | STRING | Номер телефона (уникальный) |
+| email | STRING | Email (опционально) |
 
-Соответствие имён диаграммы и кода
+### Таблица computers
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| id | INTEGER | Первичный ключ |
+| is_busy | BOOLEAN | Занят ли ПК |
+| session_end | DATETIME | Время окончания брони |
+| current_user_id | INTEGER | Внешний ключ на users.id |
+
+### Таблица sessions
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| id | INTEGER | Первичный ключ |
+| user_id | INTEGER | Внешний ключ на users.id |
+| pc_id | INTEGER | Внешний ключ на computers.id |
+| start_time | DATETIME | Начало сессии |
+| end_time | DATETIME | Конец сессии |
+| hours | INTEGER | Количество часов |
+| is_active | BOOLEAN | Активна ли сессия |
+
+## Соответствие имён диаграммы и кода
 
 | На диаграмме | В коде | Файл |
 |-------------|--------|------|
-| script.js / loadPCs() | async function loadPCs() | static/script.js |
-| script.js / bookPC() | async function bookPC(id) | static/script.js |
-| script.js / endSession() | async function endSession(id) | static/script.js |
-| main.py (GET /pcs) | @app.get("/pcs") def get_pcs() | main.py |
-| main.py (POST /book) | @app.post("/book/{pc_id}") def book_pc() | main.py |
-| main.py (POST /end) | @app.post("/end/{pc_id}") def end_session() | main.py |
+| script.js | loadPCs(), bookPC(), endSession(), showHistory() | static/script.js |
+| main.py | GET /pcs, POST /book, POST /end, GET /history | main.py |
 | update_sessions() | def update_sessions(db) | main.py |
+| users | class User(Base) | main.py |
 | computers | class Computer(Base) | main.py |
-
-
-
-
-
+| sessions | class Session(Base) | main.py |
