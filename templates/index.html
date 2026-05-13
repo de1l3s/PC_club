@@ -3,21 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Club</title>
-
+    <title>Cyber Club — Бронирование ПК</title>
     <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="container">
+    <!-- Фоновые частицы -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-bg"></div>
+    </div>
 
-    <h1>🎮 Cyber Club</h1>
+    <div class="container">
 
-    <div id="pcs" class="pcs-grid"></div>
+        <!-- Шапка -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🎮</span>
+                <h1>Cyber<span class="accent">Club</span></h1>
+            </div>
+            <p class="subtitle">Бронирование игровых компьютеров</p>
+        </header>
 
-</div>
+        <!-- Панель действий -->
+        <div class="actions-bar">
+            <button class="btn-history" onclick="showHistory()">
+                <span>📋</span> Моя история
+            </button>
+            <div class="stats">
+                <span id="free-count">—</span> свободно из <span id="total-count">—</span>
+            </div>
+        </div>
 
-<script src="/static/script.js"></script>
+        <!-- Сетка ПК -->
+        <div id="pcs" class="pcs-grid"></div>
 
+        <!-- Футер -->
+        <footer class="footer">
+            <p>© 2025 CyberClub. Все права защищены.</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
 </body>
 </html>
