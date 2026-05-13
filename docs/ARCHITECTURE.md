@@ -1,7 +1,6 @@
 Архитектура системы Cyber Club
 
 Диаграмма компонентов (PlantUML)
-![Диаграмма компонентов](architecture.png)
 ```plantuml
 @startuml
 skinparam componentStyle rectangle
