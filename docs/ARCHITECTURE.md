@@ -71,3 +71,7 @@ end note
 | main.py (POST /end) | @app.post("/end/{pc_id}") def end_session() | main.py |
 | update_sessions() | def update_sessions(db) | main.py |
 | computers | class Computer(Base) | main.py |
+
+
+<img width="1325" height="910" alt="image" src="https://github.com/user-attachments/assets/fd66e7be-8bdb-4188-81c9-1e37b45d3ee9" />
+**
