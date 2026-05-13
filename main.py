@@ -16,13 +16,28 @@ DIGITS_REGEX = re.compile(r"\d")
 def validate_email(email: str) -> bool:
     return bool(EMAIL_REGEX.match(email))
 
+
 def validate_phone(phone: str) -> bool:
-    """Проверяет, что телефон содержит только цифры, пробелы, +, -, () и минимум 5 цифр."""
-    if not PHONE_REGEX.match(phone):
+    """
+    Проверяет, что телефон содержит ровно 11 цифр.
+    Первая цифра — 8 или телефон начинается с +7.
+    """
+    # Оставляем только цифры
+    digits = re.sub(r"\D", "", phone)
+
+    # Должно быть ровно 11 цифр
+    if len(digits) != 11:
         return False
-    # Проверяем, что есть хотя бы 5 цифр
-    digits = DIGITS_REGEX.findall(phone)
-    return len(digits) >= 5
+
+    # Первая цифра 8
+    if digits[0] == "8":
+        return True
+
+    # Или номер начинается с +7
+    if phone.strip().startswith("+7"):
+        return True
+
+    return False
 
 # === DB настройка ===
 DATABASE_URL = "sqlite:///./club.db"
